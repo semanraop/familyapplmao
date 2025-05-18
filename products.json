@@ -1,0 +1,166 @@
+{
+  "bagNoodles": [
+    {
+      "name": "M2MN Kari",
+      "price": 4.49,
+      "units": 55
+    },
+    {
+      "name": "M2MN Ayam",
+      "price": 4.49,
+      "units": 39
+    },
+    {
+      "name": "M2MN Tom Yam",
+      "price": 5.75,
+      "units": 4
+    },
+    {
+      "name": "M2MN Asam Laksa",
+      "price": 5.75,
+      "units": 2
+    },
+    {
+      "name": "Maggi Big Kari",
+      "price": 6.35,
+      "units": 13
+    },
+    {
+      "name": "Maggi Big Ayam",
+      "price": 6.35,
+      "units": 5
+    },
+    {
+      "name": "Maggi Big Tom Yam",
+      "price": 6.75,
+      "units": 2
+    },
+    {
+      "name": "Maggi Syiok! Tom Yam Kaw",
+      "price": 7.79,
+      "units": 2
+    },
+    {
+      "name": "Maggi Syiok! Kari Kaw",
+      "price": 7.79,
+      "units": 1
+    },
+    {
+      "name": "Maggi Syiok! Mi Goreng Cili Ala Kampung",
+      "price": 7.55,
+      "units": 2
+    },
+    {
+      "name": "Maggi Syiok! Aglio Olio",
+      "price": 7.79,
+      "units": 0
+    },
+    {
+      "name": "Maggi Mi Goreng Laksa Warisan",
+      "price": 0,
+      "units": 0
+    },
+    {
+      "name": "Maggi Pedas Giler Ayam Bakar",
+      "price": 8.29,
+      "units": 6
+    },
+    {
+      "name": "Maggi Pedas Giler Tom Yummz",
+      "price": 8.29,
+      "units": 0
+    },
+    {
+      "name": "Maggi Pedas Giler Cheezy Berapi",
+      "price": 10.49,
+      "units": 0
+    }
+  ],
+  "portableNoodles": [
+    {
+      "name": "Maggi Pedas Giler Ayam Bakar Bowl",
+      "price": 3.85,
+      "units": 1
+    },
+    {
+      "name": "Maggi Pedas Giler Tom Yumzz Bowl",
+      "price": 3.85,
+      "units": 0
+    },
+    {
+      "name": "Maggi Pedas Giler Cheezy Berapi Bowl",
+      "price": 4.65,
+      "units": 3
+    },
+    {
+      "name": "Maggi Syiok! Hot Mealz Cili Ala Kampung",
+      "price": 4.15,
+      "units": 0
+    },
+    {
+      "name": "Maggi Syiok! Hot Mealz Kari Kaw",
+      "price": 4.15,
+      "units": 3
+    },
+    {
+      "name": "Maggi Syiok! Hot Mealz Tom Yam Kaw",
+      "price": 4.15,
+      "units": 2
+    },
+    {
+      "name": "Maggi Syiok! Aglio Olio Bowl",
+      "price": 4.15,
+      "units": 0
+    },
+    {
+      "name": "Maggi Hot Cup Kari",
+      "price": 2.25,
+      "units": 20
+    },
+    {
+      "name": "Maggi Hot Cup Kari (6)",
+      "price": 10.95,
+      "units": 16
+    },
+    {
+      "name": "Maggi Hot Cup Sup Ayam",
+      "price": 2.25,
+      "units": 3
+    },
+    {
+      "name": "Maggi Hot Cup Sup Ayam (6)",
+      "price": 10.95,
+      "units": 0
+    },
+    {
+      "name": "Maggi Hot Cup Tom Yam",
+      "price": 2.25,
+      "units": 1
+    },
+    {
+      "name": "Maggi Hot Cup Tom Yam (6)",
+      "price": 10.95,
+      "units": 8
+    },
+    {
+      "name": "Maggi Hot Cup Asam Laksa",
+      "price": 2.25,
+      "units": 0
+    },
+    {
+      "name": "Maggi Hot Cup Asam Laksa (6)",
+      "price": 0,
+      "units": 0
+    },
+    {
+      "name": "Maggi Mug Kari",
+      "price": 7.95,
+      "units": 1
+    },
+    {
+      "name": "Maggi Mug Ayam",
+      "price": 0,
+      "units": 0
+    }
+  ]
+}

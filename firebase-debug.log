@@ -1,0 +1,91 @@
+[debug] [2025-05-18T17:31:02.170Z] ----------------------------------------------------------------------
+[debug] [2025-05-18T17:31:02.172Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\adieb\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-05-18T17:31:02.172Z] CLI Version:   14.4.0
+[debug] [2025-05-18T17:31:02.172Z] Platform:      win32
+[debug] [2025-05-18T17:31:02.172Z] Node Version:  v22.15.0
+[debug] [2025-05-18T17:31:02.173Z] Time:          Mon May 19 2025 01:31:02 GMT+0800 (Singapore Standard Time)
+[debug] [2025-05-18T17:31:02.173Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-05-18T17:31:02.176Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-05-18T17:31:02.177Z] > authorizing via signed-in user (adiebwafie@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\adieb\CascadeProjects\maggi-sales-report
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[info] i  If you want to create a project in a Google Cloud organization or folder, please use "firebase projects:create" instead, and return to this command when you've created the project. 
+[debug] [2025-05-18T17:33:04.952Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:04.952Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:04.953Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2025-05-18T17:33:04.953Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"familyig2","name":"familyig2"}
+[debug] [2025-05-18T17:33:06.189Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 200
+[debug] [2025-05-18T17:33:06.189Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"name":"operations/create_project.global.8913186341219146796"}
+[debug] [2025-05-18T17:33:06.189Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:06.189Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:06.190Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8913186341219146796 [none]
+[debug] [2025-05-18T17:33:07.306Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8913186341219146796 200
+[debug] [2025-05-18T17:33:07.306Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8913186341219146796 {"name":"operations/create_project.global.8913186341219146796"}
+[debug] [2025-05-18T17:33:07.808Z] [Project Creation Poller] Retrying task index 0
+[debug] [2025-05-18T17:33:07.808Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:07.808Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:07.808Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8913186341219146796 [none]
+[debug] [2025-05-18T17:33:08.122Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8913186341219146796 200
+[debug] [2025-05-18T17:33:08.122Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8913186341219146796 {"name":"operations/create_project.global.8913186341219146796","metadata":{"@type":"type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus","gettable":true,"ready":true},"done":true,"response":{"@type":"type.googleapis.com/google.cloudresourcemanager.v1.Project","projectNumber":"421795567653","projectId":"familyig2","lifecycleState":"ACTIVE","name":"familyig2","createTime":"2025-05-18T17:33:05.837129Z"}}
+[debug] [2025-05-18T17:33:08.123Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:08.123Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:08.123Z] >>> [apiv2][query] POST https://firebase.googleapis.com/v1beta1/projects/familyig2:addFirebase [none]
+[debug] [2025-05-18T17:33:11.879Z] <<< [apiv2][status] POST https://firebase.googleapis.com/v1beta1/projects/familyig2:addFirebase 200
+[debug] [2025-05-18T17:33:11.879Z] <<< [apiv2][body] POST https://firebase.googleapis.com/v1beta1/projects/familyig2:addFirebase {"name":"operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl"}
+[debug] [2025-05-18T17:33:11.879Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:11.879Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:11.879Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl [none]
+[debug] [2025-05-18T17:33:15.477Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl 200
+[debug] [2025-05-18T17:33:15.477Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl {"name":"operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl"}
+[debug] [2025-05-18T17:33:15.982Z] [Add Firebase Poller] Retrying task index 0
+[debug] [2025-05-18T17:33:15.983Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:15.983Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:15.983Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl [none]
+[debug] [2025-05-18T17:33:17.104Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl 200
+[debug] [2025-05-18T17:33:17.104Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl {"name":"operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl"}
+[debug] [2025-05-18T17:33:18.110Z] [Add Firebase Poller] Retrying task index 0
+[debug] [2025-05-18T17:33:18.110Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:18.110Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:18.110Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl [none]
+[debug] [2025-05-18T17:33:19.061Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl 200
+[debug] [2025-05-18T17:33:19.061Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl {"name":"operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl"}
+[debug] [2025-05-18T17:33:21.068Z] [Add Firebase Poller] Retrying task index 0
+[debug] [2025-05-18T17:33:21.068Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:21.068Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:21.068Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl [none]
+[debug] [2025-05-18T17:33:22.100Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl 200
+[debug] [2025-05-18T17:33:22.100Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl {"name":"operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl"}
+[debug] [2025-05-18T17:33:26.107Z] [Add Firebase Poller] Retrying task index 0
+[debug] [2025-05-18T17:33:26.107Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:26.107Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:26.107Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl [none]
+[debug] [2025-05-18T17:33:30.571Z] *** [apiv2] error from fetch(https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl, {"headers":{},"method":"GET"}): FetchError: request to https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl failed, reason: read ECONNRESET
+[debug] [2025-05-18T17:33:38.584Z] [Add Firebase Poller] Retrying task index 0
+[debug] [2025-05-18T17:33:38.584Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:38.584Z] Checked if tokens are valid: true, expires at: 1747593045179
+[debug] [2025-05-18T17:33:38.585Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZmYyMWJiNWEtNTE5Mi00ZTYwLWE3MTktM2EyODQ4YTg1NDhl [none]
+[debug] Task index 0 failed: timed out after 30000ms.
+[debug] [2025-05-18T17:33:41.890Z] Task index 0 failed: timed out after 30000ms.
+[debug] [2025-05-18T17:33:42.475Z] FirebaseError: Task index 0 failed: timed out after 30000ms.
+    at Timeout.<anonymous> (C:\Users\adieb\AppData\Roaming\npm\node_modules\firebase-tools\lib\throttler\throttler.js:171:24)
+    at listOnTimeout (node:internal/timers:588:17)
+    at process.processTimers (node:internal/timers:523:7)
+[error] 
+[error] Error: Failed to add Firebase to Google Cloud Platform project. See firebase-debug.log for more info.
