@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="/css/speech.css">
   <!-- Gemini insights styles -->
   <link rel="stylesheet" href="/css/gemini.css">
+  <!-- Chat styles -->
+  <link rel="stylesheet" href="/css/chat.css">
+  <link rel="stylesheet" href="/css/tabbed-chat.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -355,6 +358,7 @@
           <div class="ai-tab active" data-tab="insights">Sales Insights</div>
           <div class="ai-tab" data-tab="forecast">Sales Forecast</div>
           <div class="ai-tab" data-tab="marketing">Marketing Suggestions</div>
+          <div class="ai-tab" data-tab="chat">Group Chat</div>
         </div>
         
         <div class="ai-generate-buttons">
@@ -405,6 +409,19 @@
             </div>
           </div>
         </div>
+        
+        <div class="ai-content" id="chat-content">
+          <div class="ai-card">
+            <h3>Group Chat</h3>
+            <div id="tabbed-chat-container" class="tabbed-chat-container">
+              <div id="chat-messages" class="chat-messages"></div>
+              <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Type your message here...">
+                <button id="chat-send-btn">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
       <% } %>
     </div>
     <% } %>
@@ -424,6 +441,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
   
   <!-- Application scripts -->
   <script src="/js/firebase-config.js"></script>
@@ -432,6 +450,7 @@
   <script src="/js/speech-recognition.js"></script>
   <script src="/js/chat.js"></script>
   <script src="/js/gemini-client.js"></script>
+  <script src="/js/chat-service.js"></script>
   
   <!-- Speech recognition status indicator -->
   <div class="speech-status" id="speechStatus">Listening...</div>

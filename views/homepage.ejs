@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maggi Sales Dashboard</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Chat styles -->
+  <link rel="stylesheet" href="/css/chat.css">
+  <link rel="stylesheet" href="/css/tabbed-chat.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      background-color: #d32f2f;
+      color: white;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .logo h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #fff;
+      margin-right: 10px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .user-name {
+      font-weight: bold;
+    }
+    
+    .logout-btn {
+      margin-left: 15px;
+      background: none;
+      border: 1px solid white;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .logout-btn:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+    
+    .main-tabs {
+      display: flex;
+      margin: 20px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .main-tab {
+      padding: 12px 24px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      border-radius: 5px 5px 0 0;
+      margin-right: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #555;
+      transition: all 0.2s;
+    }
+    
+    .main-tab:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .main-tab.active {
+      background-color: white;
+      color: #d32f2f;
+      border-bottom: 1px solid white;
+      margin-bottom: -1px;
+    }
+    
+    .main-tab i {
+      margin-right: 8px;
+    }
+    
+    .tab-content {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-top: none;
+      padding: 20px;
+      border-radius: 0 0 5px 5px;
+      min-height: 500px;
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .welcome-message {
+      text-align: center;
+      margin: 40px 0;
+    }
+    
+    .welcome-message h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .welcome-message p {
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    
+    .dashboard-stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: calc(25% - 20px);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .stat-card h3 {
+      margin-top: 0;
+      color: #555;
+      font-size: 16px;
+    }
+    
+    .stat-card .value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #d32f2f;
+      margin: 10px 0;
+    }
+    
+    .stat-card .change {
+      font-size: 14px;
+      color: #4caf50;
+    }
+    
+    .stat-card .change.negative {
+      color: #f44336;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+      color: #777;
+      font-size: 14px;
+    }
+    
+    /* Chat container styles */
+    .chat-container {
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .stat-card {
+        width: calc(50% - 15px);
+      }
+      
+      .main-tab {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .stat-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div class="logo">
+        <h1>Maggi Sales Dashboard</h1>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar" id="user-avatar"></div>
+        <div class="user-name" id="user-name"></div>
+        <button class="logout-btn" id="logout-btn">Logout</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="welcome-message">
+      <h2>Welcome to Your Dashboard</h2>
+      <p>Access your sales reports and chat with team members using the tabs below.</p>
+    </div>
+    
+    <div class="main-tabs">
+      <div class="main-tab active" data-tab="dashboard">
+        <i class="fas fa-home"></i> Dashboard
+      </div>
+      <div class="main-tab" data-tab="sales-report">
+        <i class="fas fa-chart-bar"></i> Sales Report
+      </div>
+      <div class="main-tab" data-tab="chat">
+        <i class="fas fa-comments"></i> Group Chat
+      </div>
+    </div>
+    
+    <div id="dashboard-content" class="tab-content active">
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <h3>Total Sales</h3>
+          <div class="value">RM <%= totals.totalSalesValue %></div>
+          <div class="change">+5.2% from last month</div>
+        </div>
+        <div class="stat-card">
+          <h3>Units Sold</h3>
+          <div class="value"><%= totals.totalSalesUnits %></div>
+          <div class="change">+3.8% from last month</div>
+        </div>
+        <div class="stat-card">
+          <h3>Top Product</h3>
+          <div class="value">Maggi Curry</div>
+          <div class="change">42% of total sales</div>
+        </div>
+        <div class="stat-card">
+          <h3>Active Users</h3>
+          <div class="value">12</div>
+          <div class="change negative">-2 from last week</div>
+        </div>
+      </div>
+      
+      <div class="recent-activity">
+        <h3>Recent Activity</h3>
+        <p>Your sales data was last updated on <%= new Date().toLocaleDateString() %> at <%= new Date().toLocaleTimeString() %>.</p>
+        <p>Click on the Sales Report tab to view detailed information.</p>
+      </div>
+    </div>
+    
+    <div id="sales-report-content" class="tab-content">
+      <h2>Sales Report</h2>
+      <p>Loading sales report data...</p>
+      <iframe id="sales-report-frame" style="width: 100%; height: 600px; border: none;" src="/sales-report"></iframe>
+    </div>
+    
+    <div id="chat-content" class="tab-content">
+      <h2>Group Chat</h2>
+      <div class="chat-container">
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input-area">
+          <input type="text" id="chat-input" placeholder="Type your message here...">
+          <button id="chat-send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p>Generated on <%= new Date().toLocaleDateString() %> at <%= new Date().toLocaleTimeString() %></p>
+      <p>&copy; 2025 Maggi Sales Dashboard</p>
+    </div>
+  </div>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+  
+  <!-- Application scripts -->
+  <script src="/js/firebase-config.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/chat-service.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+          // Redirect to login page if not logged in
+          window.location.href = '/login';
+          return;
+        }
+        
+        // Set user info
+        document.getElementById('user-name').textContent = user.displayName || user.email;
+        if (user.photoURL) {
+          document.getElementById('user-avatar').style.backgroundImage = `url('${user.photoURL}')`;
+        } else {
+          document.getElementById('user-avatar').style.backgroundImage = `url('/images/avatars/you.png')`;
+        }
+        
+        // Logout button
+        document.getElementById('logout-btn').addEventListener('click', function() {
+          firebase.auth().signOut().then(function() {
+            window.location.href = '/login';
+          }).catch(function(error) {
+            console.error('Error signing out:', error);
+          });
+        });
+      });
+      
+      // Tab switching
+      const tabs = document.querySelectorAll('.main-tab');
+      const contents = document.querySelectorAll('.tab-content');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabId = this.getAttribute('data-tab');
+          
+          // Remove active class from all tabs and contents
+          tabs.forEach(t => t.classList.remove('active'));
+          contents.forEach(c => c.classList.remove('active'));
+          
+          // Add active class to clicked tab and corresponding content
+          this.classList.add('active');
+          document.getElementById(`${tabId}-content`).classList.add('active');
+          
+          // Special handling for chat tab
+          if (tabId === 'chat') {
+            const chatMessages = document.getElementById('chat-messages');
+            if (chatMessages) {
+              setTimeout(() => {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+              }, 100);
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

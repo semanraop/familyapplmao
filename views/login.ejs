@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Maggi Sales Dashboard</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .login-container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 400px;
+      overflow: hidden;
+    }
+    
+    .login-header {
+      background-color: #d32f2f;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .login-header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    
+    .login-form {
+      padding: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      font-weight: bold;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    
+    .form-group input:focus {
+      border-color: #d32f2f;
+      outline: none;
+    }
+    
+    .login-btn {
+      background-color: #d32f2f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .login-btn:hover {
+      background-color: #b71c1c;
+    }
+    
+    .signup-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+    
+    .signup-link a {
+      color: #d32f2f;
+      text-decoration: none;
+    }
+    
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+    
+    .error-message {
+      background-color: #ffebee;
+      color: #c62828;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: none;
+    }
+    
+    .toggle-form {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+    
+    .toggle-form a {
+      color: #d32f2f;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .toggle-form a:hover {
+      text-decoration: underline;
+    }
+    
+    .signup-form {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>Maggi Sales Dashboard</h1>
+    </div>
+    
+    <div class="login-form">
+      <div id="error-message" class="error-message"></div>
+      
+      <div id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="Enter your email">
+        </div>
+        
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password">
+        </div>
+        
+        <button id="login-btn" class="login-btn">Login</button>
+        
+        <div class="toggle-form">
+          Don't have an account? <a id="show-signup">Sign up</a>
+        </div>
+      </div>
+      
+      <div id="signup-form" class="signup-form">
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="Enter your email">
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="Create a password">
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-confirm">Confirm Password</label>
+          <input type="password" id="signup-confirm" placeholder="Confirm your password">
+        </div>
+        
+        <button id="signup-btn" class="login-btn">Sign Up</button>
+        
+        <div class="toggle-form">
+          Already have an account? <a id="show-login">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  
+  <!-- Application scripts -->
+  <script src="/js/firebase-config.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is already logged in
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          // Redirect to homepage if already logged in
+          window.location.href = '/homepage';
+        }
+      });
+      
+      // Toggle between login and signup forms
+      document.getElementById('show-signup').addEventListener('click', function() {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('signup-form').style.display = 'block';
+      });
+      
+      document.getElementById('show-login').addEventListener('click', function() {
+        document.getElementById('signup-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+      });
+      
+      // Login functionality
+      document.getElementById('login-btn').addEventListener('click', function() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        
+        if (!email || !password) {
+          showError('Please enter both email and password');
+          return;
+        }
+        
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Redirect to homepage
+            window.location.href = '/homepage';
+          })
+          .catch((error) => {
+            showError(error.message);
+          });
+      });
+      
+      // Signup functionality
+      document.getElementById('signup-btn').addEventListener('click', function() {
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirm = document.getElementById('signup-confirm').value;
+        
+        if (!email || !password || !confirm) {
+          showError('Please fill in all fields');
+          return;
+        }
+        
+        if (password !== confirm) {
+          showError('Passwords do not match');
+          return;
+        }
+        
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Redirect to homepage
+            window.location.href = '/homepage';
+          })
+          .catch((error) => {
+            showError(error.message);
+          });
+      });
+      
+      // Helper function to show error messages
+      function showError(message) {
+        const errorElement = document.getElementById('error-message');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

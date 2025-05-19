@@ -339,24 +339,53 @@ app.get('/admin/users', (req, res) => {
   }
 });
 
-// Routes
-app.get('/', async (req, res) => {
-  const totals = calculateTotals();
+// Main route - redirect to homepage if logged in, otherwise to login page
+app.get('/', (req, res) => {
+  // Check if user has a valid session
+  if (req.session && req.session.userId) {
+    res.redirect('/homepage');
+  } else {
+    res.redirect('/login');
+  }
+});
+
+// Login page route
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+// Homepage route
+app.get('/homepage', (req, res) => {
+  // Calculate totals for dashboard stats
+  const totals = {
+    totalSalesUnits: products.reduce((sum, product) => sum + product.units, 0),
+    totalSalesValue: products.reduce((sum, product) => sum + (product.price * product.units), 0).toFixed(2)
+  };
   
-  // Default values for AI insights - not loading automatically
-  const insights = null;
-  const forecast = null;
-  const marketingSuggestions = null;
+  res.render('homepage', { totals });
+});
+
+// Sales report route - this will be loaded in an iframe from the homepage
+app.get('/sales-report', (req, res) => {
+  const editMode = false;
+  const bagNoodles = products.filter(p => p.category === 'bag');
+  const portableNoodles = products.filter(p => p.category === 'portable');
+  
+  // Calculate totals
+  const totals = {
+    totalSalesUnits: products.reduce((sum, product) => sum + product.units, 0),
+    totalSalesValue: products.reduce((sum, product) => sum + (product.price * product.units), 0).toFixed(2)
+  };
   
   res.render('index', { 
     products, 
-    totals,
-    outlet: settings.outlet,
-    activationDate: settings.activationDate,
-    editMode: false,
-    insights,
-    forecast,
-    marketingSuggestions,
+    bagNoodles, 
+    portableNoodles, 
+    totals, 
+    editMode,
+    insights: null,
+    forecast: null,
+    marketingSuggestions: null,
     geminiApiEnabled: process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key_here'
   });
 });
@@ -507,6 +536,46 @@ app.post('/api/chat', async (req, res) => {
     res.status(500).json({ error: 'Failed to process chat message' });
   }
 });
+
+// Group Chat API endpoints
+app.get('/api/chat/users', authenticateUser, (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+    
+    // Get all users from users.json file
+    let users = [];
+    if (fs.existsSync(path.join(__dirname, 'users.json'))) {
+      users = JSON.parse(fs.readFileSync(path.join(__dirname, 'users.json'), 'utf8'));
+    }
+    
+    // Filter out sensitive information
+    const safeUsers = users.map(user => ({
+      uid: user.uid,
+      displayName: user.displayName || user.email.split('@')[0],
+      photoURL: user.photoURL || '/images/avatars/you.png',
+      lastLogin: user.lastLogin
+    }));
+    
+    res.json({ users: safeUsers });
+  } catch (error) {
+    console.error('Error getting chat users:', error);
+    res.status(500).json({ error: 'Failed to get chat users' });
+  }
+});
+
+// Middleware to authenticate WebSocket connections
+const authenticateSocket = (socket, next) => {
+  const sessionID = socket.handshake.auth.sessionID;
+  if (!sessionID) {
+    return next(new Error('Authentication required'));
+  }
+  
+  // You would typically validate the session here
+  // For simplicity, we'll just accept any session ID
+  next();
+};
 
 app.get('/api/insights', async (req, res) => {
   try {

@@ -29,6 +29,23 @@ document.addEventListener('DOMContentLoaded', function() {
   if (!window.firebaseApp) {
     window.firebaseApp = firebase.initializeApp(firebaseConfig);
     window.firebaseAuth = firebase.auth();
+    
+    // Initialize Firestore for chat functionality
+    if (firebase.firestore) {
+      window.firebaseFirestore = firebase.firestore();
+      
+      // Enable offline persistence if supported
+      firebase.firestore().enablePersistence()
+        .catch(function(err) {
+          if (err.code === 'failed-precondition') {
+            // Multiple tabs open, persistence can only be enabled in one tab at a time
+            console.log('Firestore persistence not enabled: Multiple tabs open');
+          } else if (err.code === 'unimplemented') {
+            // The current browser does not support all of the features required for persistence
+            console.log('Firestore persistence not supported by this browser');
+          }
+        });
+    }
   }
   
   // Set up auth state listener
