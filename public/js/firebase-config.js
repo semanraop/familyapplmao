@@ -1,26 +1,54 @@
-// Mock Authentication System for Maggi Sales Report
+// Firebase Configuration for Client-Side Authentication
+
+// Firebase configuration object for familyig-9a0ae project
+const firebaseConfig = {
+  apiKey: "AIzaSyA0E09R2p2DAMqgCMqQYpWAB7YrvAzoG28",
+  authDomain: "familyig-9a0ae.firebaseapp.com",
+  projectId: "familyig-9a0ae",
+  storageBucket: "familyig-9a0ae.firebasestorage.app",
+  messagingSenderId: "375827685364",
+  appId: "1:375827685364:web:a6cc543a250413e9f6a3a1",
+  measurementId: "G-1WC81785TM"
+};
+
+// Import Firebase modules
+// These imports are loaded from the Firebase SDK CDN which should be included in your HTML
 
 // Current user information
 let currentUser = null;
 
-// Check if user is already logged in (from session)
-fetch('/api/auth/current-user')
-  .then(response => response.json())
-  .then(data => {
-    if (data.user) {
-      // User is logged in
-      currentUser = data.user;
+// Initialize Firebase when the document is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Firebase if it hasn't been initialized yet
+  if (!window.firebase) {
+    console.error('Firebase SDK not loaded. Make sure to include the Firebase SDK in your HTML.');
+    return;
+  }
+  
+  // Initialize Firebase
+  if (!window.firebaseApp) {
+    window.firebaseApp = firebase.initializeApp(firebaseConfig);
+    window.firebaseAuth = firebase.auth();
+  }
+  
+  // Set up auth state listener
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in
+      currentUser = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || user.email.split('@')[0],
+        photoURL: user.photoURL || '/images/avatars/you.png'
+      };
       updateUIForLoggedInUser();
     } else {
-      // No user logged in
+      // User is signed out
+      currentUser = null;
       updateUIForLoggedOutUser();
     }
-  })
-  .catch(error => {
-    console.error('Error checking authentication status:', error);
-    updateUIForLoggedOutUser();
   });
-
+});
 
 // Update UI for logged in user
 function updateUIForLoggedInUser() {
@@ -65,61 +93,52 @@ function updateUIForLoggedOutUser() {
 
 // Sign in with email and password
 function signInWithEmailAndPassword(email, password) {
-  return fetch('/api/auth/signin', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email, password })
-  })
-  .then(response => {
-    if (!response.ok) {
-      return response.json().then(data => {
-        throw new Error(data.error || 'Failed to sign in');
-      });
-    }
-    return response.json();
-  })
-  .then(data => {
-    currentUser = data.user;
-    updateUIForLoggedInUser();
-    return data;
-  });
+  return firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      return { user: {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || user.email.split('@')[0],
+        photoURL: user.photoURL || '/images/avatars/you.png'
+      }};
+    })
+    .catch((error) => {
+      throw new Error(error.message || 'Failed to sign in');
+    });
 }
 
 // Sign up with email and password
 function createUserWithEmailAndPassword(email, password) {
-  return fetch('/api/auth/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email, password })
-  })
-  .then(response => {
-    if (!response.ok) {
-      return response.json().then(data => {
-        throw new Error(data.error || 'Failed to create account');
+  return firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Signed up and signed in
+      const user = userCredential.user;
+      
+      // Update profile with display name
+      return user.updateProfile({
+        displayName: email.split('@')[0]
+      }).then(() => {
+        return { user: {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName || email.split('@')[0],
+          photoURL: user.photoURL || '/images/avatars/you.png'
+        }};
       });
-    }
-    return response.json();
-  })
-  .then(data => {
-    currentUser = data.user;
-    updateUIForLoggedInUser();
-    return data;
-  });
+    })
+    .catch((error) => {
+      throw new Error(error.message || 'Failed to create account');
+    });
 }
 
 // Sign out
 function signOut() {
-  return fetch('/api/auth/signout', {
-    method: 'POST'
-  })
-  .then(() => {
-    currentUser = null;
-    updateUIForLoggedOutUser();
-  });
+  return firebase.auth().signOut()
+    .catch((error) => {
+      console.error('Error signing out:', error);
+    });
 }
 
 // Get current user

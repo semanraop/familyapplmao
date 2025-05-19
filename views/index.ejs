@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <!-- Speech recognition styles -->
   <link rel="stylesheet" href="/css/speech.css">
+  <!-- Gemini insights styles -->
+  <link rel="stylesheet" href="/css/gemini.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -343,7 +345,7 @@
     <div class="ai-insights">
       <h2>AI-Powered Insights by Gemini</h2>
       
-      <% if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'your_gemini_api_key_here') { %>
+      <% if (!geminiApiEnabled) { %>
         <div class="api-key-notice">
           <p><strong>Gemini API Key Not Set</strong></p>
           <p>To enable AI-powered insights, please add your Gemini API key to the .env file.</p>
@@ -355,36 +357,52 @@
           <div class="ai-tab" data-tab="marketing">Marketing Suggestions</div>
         </div>
         
+        <div class="ai-generate-buttons">
+          <button id="generate-insights-btn" class="btn btn-primary">Generate Sales Insights</button>
+          <button id="generate-forecast-btn" class="btn btn-primary">Generate Sales Forecast</button>
+          <button id="generate-marketing-btn" class="btn btn-primary">Generate Marketing Suggestions</button>
+          <button id="generate-all-btn" class="btn btn-primary">Generate All Insights</button>
+          <div id="gemini-loading" style="display: none;">
+            <p><i class="fas fa-spinner fa-spin"></i> Generating insights with Gemini AI...</p>
+          </div>
+        </div>
+        
         <div class="ai-content active" id="insights-content">
           <div class="ai-card">
             <h3>Sales Insights</h3>
-            <% if (insights) { %>
-              <%- insights %>
-            <% } else { %>
-              <p>Loading sales insights... If this message persists, please check your Gemini API key.</p>
-            <% } %>
+            <div id="insights-container">
+              <% if (insights) { %>
+                <%- insights %>
+              <% } else { %>
+                <p>Click the "Generate Sales Insights" button above to get AI-powered insights about your sales data.</p>
+              <% } %>
+            </div>
           </div>
         </div>
         
         <div class="ai-content" id="forecast-content">
           <div class="ai-card">
             <h3>Sales Forecast</h3>
-            <% if (forecast) { %>
-              <%- forecast %>
-            <% } else { %>
-              <p>Loading sales forecast... If this message persists, please check your Gemini API key.</p>
-            <% } %>
+            <div id="forecast-container">
+              <% if (forecast) { %>
+                <%- forecast %>
+              <% } else { %>
+                <p>Click the "Generate Sales Forecast" button above to get AI-powered sales forecasts.</p>
+              <% } %>
+            </div>
           </div>
         </div>
         
         <div class="ai-content" id="marketing-content">
           <div class="ai-card">
             <h3>Marketing Suggestions</h3>
-            <% if (marketingSuggestions) { %>
-              <%- marketingSuggestions %>
-            <% } else { %>
-              <p>Loading marketing suggestions... If this message persists, please check your Gemini API key.</p>
-            <% } %>
+            <div id="marketing-container">
+              <% if (marketingSuggestions) { %>
+                <%- marketingSuggestions %>
+              <% } else { %>
+                <p>Click the "Generate Marketing Suggestions" button above to get AI-powered marketing ideas.</p>
+              <% } %>
+            </div>
           </div>
         </div>
       <% } %>
@@ -401,12 +419,19 @@
   <!-- Font Awesome for icons -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+  
   <!-- Application scripts -->
   <script src="/js/firebase-config.js"></script>
   <script src="/js/auth.js"></script>
   <script src="/js/main.js"></script>
   <script src="/js/speech-recognition.js"></script>
   <script src="/js/chat.js"></script>
+  <script src="/js/gemini-client.js"></script>
   
   <!-- Speech recognition status indicator -->
   <div class="speech-status" id="speechStatus">Listening...</div>

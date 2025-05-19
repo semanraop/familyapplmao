@@ -14,50 +14,27 @@ let firebaseInitialized = false;
 
 // Try to initialize Firebase Admin SDK
 try {
-  let serviceAccount;
+  // Use the service account file that exists in the project
+  const serviceAccountPath = path.join(__dirname, 'familyig-9a0ae-firebase-adminsdk-fbsvc-a274e1ba7f.json');
   
-  // Try to load from environment variable first
-  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  if (fs.existsSync(serviceAccountPath)) {
     try {
-      serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+      const serviceAccount = require('./familyig-9a0ae-firebase-adminsdk-fbsvc-a274e1ba7f.json');
       
-      // Fix the private key format if needed
-      if (serviceAccount.private_key) {
-        serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
-      }
-      
+      // Initialize Firebase Admin SDK
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount)
       });
+      
       firebaseInitialized = true;
-      console.log('Firebase Admin SDK initialized successfully from environment variable');
-    } catch (parseError) {
-      console.error('Error parsing Firebase service account from environment variable:', parseError);
-      throw parseError;
-    }
-  } else {
-    // Fall back to service account file if it exists
-    try {
-      if (fs.existsSync(path.join(__dirname, 'firebase-service-account.json'))) {
-        serviceAccount = require('./firebase-service-account.json');
-        
-        // Fix the private key format if needed
-        if (serviceAccount.private_key) {
-          serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
-        }
-        
-        admin.initializeApp({
-          credential: admin.credential.cert(serviceAccount)
-        });
-        firebaseInitialized = true;
-        console.log('Firebase Admin SDK initialized successfully from service account file');
-      } else {
-        throw new Error('Service account file not found');
-      }
+      console.log('Firebase Admin SDK initialized successfully from service account file');
     } catch (fileError) {
       console.error('Error loading service account file:', fileError.message);
       createMockFirebaseAdmin();
     }
+  } else {
+    console.error('Service account file not found at:', serviceAccountPath);
+    createMockFirebaseAdmin();
   }
 } catch (error) {
   console.error('Error initializing Firebase Admin SDK:', error);
@@ -366,32 +343,10 @@ app.get('/admin/users', (req, res) => {
 app.get('/', async (req, res) => {
   const totals = calculateTotals();
   
-  // Default values for AI insights
-  let insights = null;
-  let forecast = null;
-  let marketingSuggestions = null;
-  
-  // Check if Gemini API key is set
-  if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key_here') {
-    try {
-      // Prepare data for Gemini
-      const salesData = {
-        outlet: settings.outlet,
-        date: settings.activationDate,
-        products,
-        totals
-      };
-      
-      // Generate insights in parallel
-      [insights, forecast, marketingSuggestions] = await Promise.all([
-        geminiService.generateSalesInsights(salesData),
-        geminiService.generateSalesForecast(salesData),
-        geminiService.generateMarketingSuggestions(salesData)
-      ]);
-    } catch (error) {
-      console.error('Error with Gemini API:', error);
-    }
-  }
+  // Default values for AI insights - not loading automatically
+  const insights = null;
+  const forecast = null;
+  const marketingSuggestions = null;
   
   res.render('index', { 
     products, 
@@ -401,8 +356,60 @@ app.get('/', async (req, res) => {
     editMode: false,
     insights,
     forecast,
-    marketingSuggestions
+    marketingSuggestions,
+    geminiApiEnabled: process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key_here'
   });
+});
+
+// API endpoint for generating Gemini insights on demand
+app.post('/api/generate-insights', async (req, res) => {
+  try {
+    // Check if Gemini API key is set
+    if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'your_gemini_api_key_here') {
+      return res.status(400).json({ error: 'Gemini API key not set' });
+    }
+    
+    const totals = calculateTotals();
+    
+    // Prepare data for Gemini
+    const salesData = {
+      outlet: settings.outlet,
+      date: settings.activationDate,
+      products,
+      totals
+    };
+    
+    // Generate insights based on requested type
+    const { insightType } = req.body;
+    let result;
+    
+    switch (insightType) {
+      case 'insights':
+        result = await geminiService.generateSalesInsights(salesData);
+        break;
+      case 'forecast':
+        result = await geminiService.generateSalesForecast(salesData);
+        break;
+      case 'marketing':
+        result = await geminiService.generateMarketingSuggestions(salesData);
+        break;
+      case 'all':
+        const [insights, forecast, marketingSuggestions] = await Promise.all([
+          geminiService.generateSalesInsights(salesData),
+          geminiService.generateSalesForecast(salesData),
+          geminiService.generateMarketingSuggestions(salesData)
+        ]);
+        result = { insights, forecast, marketingSuggestions };
+        break;
+      default:
+        return res.status(400).json({ error: 'Invalid insight type' });
+    }
+    
+    res.json({ success: true, result });
+  } catch (error) {
+    console.error('Error generating Gemini insights:', error);
+    res.status(500).json({ error: 'Failed to generate insights' });
+  }
 });
 
 app.get('/edit', (req, res) => {
